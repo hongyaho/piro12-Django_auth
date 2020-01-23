@@ -16,13 +16,16 @@ def signup(request):
             user = form.save()  # 이때가 딱! 회원가입 하고 유저 객체 만들어진 때
                                 # 여기서 로그인 처리하면 회원가입하자마자 로그인 되게 되겠죠?
             auth_login(request, user)
-            return redirect('profile')
+            next_url = request.GET.get('next') or 'profile'
+            # 이 값이 거짓 판정을 받게 되면 뒤에 지정한 'profile'이 사용됨
+            return redirect(next_url)
     else:
         form = SignupForm()
     return render(request, 'accounts/signup.html', {
         'form':form
     })
-'''
+    '''
+
 
 class SignupView(CreateView):
     model = User
@@ -30,7 +33,8 @@ class SignupView(CreateView):
     template_name = 'accounts/signup.html'
 
     def get_success_url(self):
-        return resolve_url('profile')
+        next_url = self.request.GET.get('next') or 'profile'
+        return resolve_url(next_url)
 
     def form_valid(self, form):
         user = form.save()
