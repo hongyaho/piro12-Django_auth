@@ -7,6 +7,7 @@ from django.views.generic import CreateView
 from django.shortcuts import redirect, render, resolve_url
 from .forms import SignupForm
 
+
 '''
 # 회원가입 - 함수 기반
 def signup(request):
@@ -46,8 +47,6 @@ class SignupView(CreateView):
 signup = SignupView.as_view()
 
 
-
 @login_required
 def profile(request):
-    request.user
     return render(request, 'accounts/profile.html')
